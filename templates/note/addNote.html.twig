@@ -5,7 +5,7 @@
 
 {% block stylesheets %}
   <style>
-      /* .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; } */
+      .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
       .example-wrapper { background: #D0F0F2; padding: 2px 6px; }
   </style>
 {% endblock %}
@@ -13,5 +13,7 @@
 {% block body %}
   <div class="example-wrapper">
       <h1>Ajouter une note</h1>
+      <input type="text" name="page">
+      <input type="submit" value="Submit">
   </div>
 {% endblock %}
