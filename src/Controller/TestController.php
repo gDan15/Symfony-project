@@ -1,34 +1,37 @@
 <?php
 
 namespace App\Controller;
-
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Form\Forms;
+use Symfony\Component\Form\Extension\HttpFoundation\HttpFoundationExtension;
+
 
 class TestController extends Controller
 {
-    /**
-     * @Route("/note/test", name="noteTest")
-     */
-    public function index()
+  /**
+  * @Route("/note", name="noteTest")
+  *
+  */
+    public function new(Request $request)
     {
+        // createFormBuilder is a shortcut to get the "form factory"
+        // and then call "createBuilder()" on it
 
-        return $this->render('note/addNote.html.twig', [
-            'controller_name' => 'BlogController',
-        ]);
+        // $form = $this->createFormBuilder()
+        //     ->add('task', TextType::class)
+        //     ->add('dueDate', DateType::class)
+        //     ->getForm();
+        //
+        // return $this->render('note/testResponse.html.twig', array(
+        //     'form' => $form->createView(),
+        // ));
+        $formFactory = Forms::createFormFactoryBuilder()
+          ->addExtension(new HttpFoundationExtension())
+          ->getFormFactory();
+        return null;
     }
-    public function test(Request $request){
-    //   $test = $request->query->get('page');
-    //   return $this->render('note/testResponse.html.twig', [
-    //       'testString' => $test,
-    //   ]);
-    // }
-    if ($form->get('submit')->isClicked()) {
-      echo "test";
-      return $this->render('note/testResponse.html.twig', [
-          'testString' => $test,
-      ]);
-    }
-  }
 }

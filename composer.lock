@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "e13315335ce11598000078279d48e060",
+    "content-hash": "d9f42158d4eb62b0220b5260c03ea751",
     "packages": [
         {
             "name": "composer/ca-bundle",
@@ -2667,16 +2667,16 @@
         },
         {
             "name": "symfony/finder",
-            "version": "v4.0.4",
+            "version": "v4.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/finder.git",
-                "reference": "8b08180f2b7ccb41062366b9ad91fbc4f1af8601"
+                "reference": "552e244df10237f845a94fd64b194f848805e34b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/finder/zipball/8b08180f2b7ccb41062366b9ad91fbc4f1af8601",
-                "reference": "8b08180f2b7ccb41062366b9ad91fbc4f1af8601",
+                "url": "https://api.github.com/repos/symfony/finder/zipball/552e244df10237f845a94fd64b194f848805e34b",
+                "reference": "552e244df10237f845a94fd64b194f848805e34b",
                 "shasum": ""
             },
             "require": {
@@ -2712,7 +2712,7 @@
             ],
             "description": "Symfony Finder Component",
             "homepage": "https://symfony.com",
-            "time": "2018-01-03T07:38:00+00:00"
+            "time": "2018-02-11T17:17:44+00:00"
         },
         {
             "name": "symfony/flex",
