@@ -1,6 +1,7 @@
 <?php
 // /src/Controller/MainController.php
 namespace App\Controller;
+use App\Entity\Note;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,16 +21,22 @@ class MainController extends Controller
         $defaults = array(
             'dueDate' => new \DateTime('tomorrow'),
         );
+        $note = new Note();
         $form = $this->createFormBuilder()
-            ->add('Titre', TextType::class)
-            ->add('Contenue', TextType::class)
-            ->add('Date', DateType::class)
-            ->add('Categorie', TextType::class)
+            ->add('title', TextType::class, array('label' => 'Titre'))
+            ->add('content', TextType::class, array('label' => 'Contenu'))
+            ->add('date', DateType::class, array('label' => 'Date'))
+            ->add('category', TextType::class, array('label' => 'Catégorie'))
             ->add('Save', SubmitType::class, array('label' => 'Sauvegarder'))
             ->getForm();
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
+
+            $note = $form->getData();
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($note);
+            $entityManager->flush();
             return $this->redirectToRoute('home');
         }
         return $this->render('note/addNote.html.twig', array(
@@ -40,7 +47,7 @@ class MainController extends Controller
       * @Route("/note/home", name="home")
       *
       */
-      public function new(Request $request)
+      public function home(Request $request)
       {
           return $this->render('note/homePage.html.twig');
       }

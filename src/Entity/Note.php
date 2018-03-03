@@ -17,18 +17,20 @@ class Note
     private $id;
 
     /**
-     * @ORM\Column(type="DateTime")
+     * @ORM\Column(type="string", length=100)
      */
-    private date;
-
+    private $title;
     /**
-     * @ORM\Column(type="String")
+     * @ORM\Column(type="string", length=100)
      */
-    private title;
-
+    private $content;
     /**
-     * @ORM\Column(type="String")
+     * @ORM\Column(type="datetime")
      */
-    private note;
+    private $date;
+    /**
+     * @ORM\Column(type="string", length=100)
+     */
+    private $category;
 
 }
