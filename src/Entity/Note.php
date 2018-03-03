@@ -16,26 +16,19 @@ class Note
      */
     private $id;
 
-
-
     /**
      * @ORM\Column(type="DateTime")
      */
     private date;
-
-
 
     /**
      * @ORM\Column(type="String")
      */
     private title;
 
-
-
     /**
      * @ORM\Column(type="String")
      */
     private note;
-
 
 }
