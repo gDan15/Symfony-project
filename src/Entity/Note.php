@@ -16,26 +16,54 @@ class Note
      */
     private $id;
 
-
-
     /**
-     * @ORM\Column(type="DateTime")
+     * @ORM\Column(type="string", length=100)
      */
-    private date;
-
-
-
+    private $title;
     /**
-     * @ORM\Column(type="String")
+     * @ORM\Column(type="string", length=100)
      */
-    private title;
-
-
-
+    private $content;
     /**
-     * @ORM\Column(type="String")
+     * @ORM\Column(type="datetime")
      */
-    private note;
+    private $date;
+    /**
+     * @ORM\Column(type="string", length=100)
+     */
+    private $category;
 
+    public function setCategory($category){
+      $this->category = $category;
+    }
+
+    public function setTitle($title){
+      $this->title = $title;
+    }
+
+    public function setDate(\DateTime $date = null){
+      $this->date = $date;
+    }
+
+    public function setContent($content){
+      $this->content = $content;
+    }
+
+
+    public function getCategory(){
+      return $this->category;
+    }
+
+    public function getTitle(){
+      return $this->title;
+    }
+
+    public function getDate(){
+      return $this->date;
+    }
+
+    public function getContent(){
+      return $this->content;
+    }
 
 }
