@@ -17,7 +17,8 @@ class AddNote extends AbstractType
           ->add('content', TextType::class, array('label' => 'Contenu'))
           ->add('date', DateType::class, array('label' => 'Date'))
           ->add('category', TextType::class, array('label' => 'Catégorie'))
-          ->add('Save', SubmitType::class, array('label' => 'Sauvegarder'))
+          ->add('save', SubmitType::class, array('label' => 'Sauvegarder'))
+          ->add('home', SubmitType::class, array('label' => "Retour à la page d'accueil"))
           ->getForm();
         ;
     }
