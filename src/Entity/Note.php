@@ -33,4 +33,37 @@ class Note
      */
     private $category;
 
+    public function setCategory($category){
+      $this->category = $category;
+    }
+
+    public function setTitle($title){
+      $this->title = $title;
+    }
+
+    public function setDate(\DateTime $date = null){
+      $this->date = $date;
+    }
+
+    public function setContent($content){
+      $this->content = $content;
+    }
+
+
+    public function getCategory(){
+      return $this->category;
+    }
+
+    public function getTitle(){
+      return $this->title;
+    }
+
+    public function getDate(){
+      return $this->date;
+    }
+
+    public function getContent(){
+      return $this->content;
+    }
+
 }

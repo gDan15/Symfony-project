@@ -2,6 +2,7 @@
 // /src/Controller/MainController.php
 namespace App\Controller;
 use App\Entity\Note;
+use App\Form\AddNote;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,18 +23,13 @@ class MainController extends Controller
             'dueDate' => new \DateTime('tomorrow'),
         );
         $note = new Note();
-        $form = $this->createFormBuilder()
-            ->add('title', TextType::class, array('label' => 'Titre'))
-            ->add('content', TextType::class, array('label' => 'Contenu'))
-            ->add('date', DateType::class, array('label' => 'Date'))
-            ->add('category', TextType::class, array('label' => 'Catégorie'))
-            ->add('Save', SubmitType::class, array('label' => 'Sauvegarder'))
-            ->getForm();
+
+        $form = $this->createForm(AddNote::class, $note);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $note = $form->getData();
+            // $note = $form->getData();
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($note);
             $entityManager->flush();
