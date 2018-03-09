@@ -58,7 +58,7 @@ class MainController extends Controller
     public function editNote(Request $request){
 
         $note = new Note;
-        //TODO : have to change the names of the button in the form
+        //TODO : have to change the names of the buttons in the form
         $form = $this->createForm(AddNote::class, $note);
         $form->handleRequest($request);
         //TODO : have to change the name of the button in the following if
