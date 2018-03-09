@@ -18,7 +18,7 @@
 
 {% block body %}
   <div class="example-wrapper">
-      <h1>Bienvenue sur l'application MyNotes !</h1>
+      <h1>Bienvenue sur l application MyNotes !</h1>
   </div>
   {% for note in notes %}
     <div class="title-wrapper">
@@ -28,6 +28,7 @@
         <p>{{note.getContent}}</p>
       </div>
     </div>
-
+    <a href="{{ path('editNote', {'id': note.getId() }) }}" class="btn btn-primary">Edit note</a>
+    <a href="{{ path('deleteNote', {'id': note.getId() }) }}" class="btn btn-danger">Delete note</a>
   {% endfor %}
 {% endblock %}
