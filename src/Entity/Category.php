@@ -22,7 +22,7 @@ class Category
     private $wording;
 
     public function getId(){
-      return $id;
+      return $this->id;
     }
 
     public function getWording(){

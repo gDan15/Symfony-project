@@ -3,18 +3,7 @@
 
 {% block title %}{{parent()}}{% endblock %}
 
-{% block stylesheets %}
-  <style>
-      .title-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 10px/1.5 sans-serif; }
-      .title-wrapper { background: #9494b8; padding: 2px 6px; }
-
-      .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 10px/1.5 sans-serif; }
-      .example-wrapper { background: #D0F0F2; padding: 2px 6px; }
-
-      .contenue-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 10px/1.5 sans-serif; }
-      .contenue-wrapper { background: #cccccc; padding: 2px 6px; }
-  </style>
-{% endblock %}
+{% block stylesheets %}{{parent()}}{% endblock %}
 
 {% block body %}
   <div class="example-wrapper">
