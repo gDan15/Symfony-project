@@ -23,7 +23,7 @@
   {% for note in notes %}
     <div class="title-wrapper">
       <h2>{{note.getTitle}}</h2>
-      <p>{{note.getCategory}} - {{note.getDate}}</p>
+      <p>{{note.getCategory}} - {{note.getDate()|date('Y-m-d')}}</p>
       <div class="contenue-wrapper">
         <p>{{note.getContent}}</p>
       </div>

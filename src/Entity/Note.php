@@ -64,7 +64,7 @@ class Note
 
     public function getDate(){
       if($this->date != null){
-        return $this->date->format('d-m-Y');
+        return $this->date;
       }
     }
 

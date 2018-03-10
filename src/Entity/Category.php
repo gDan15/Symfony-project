@@ -1,29 +1,35 @@
 <?php
+
 namespace App\Entity;
 
-public class Category{
+use Doctrine\ORM\Mapping as ORM;
 
-  /**
-   * @ORM\Id
-   * @ORM\GeneratedValue
-   * @ORM\Column(type="integer")
-   */
-  private $id;
-  /**
-   * @ORM\Column(type="string", length="20")
-   */
-  private $wording;
+/**
+ * @ORM\Entity(repositoryClass="App\Repository\CategoryRepository")
+ */
+class Category
+{
+    /**
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
+     */
+    private $id;
 
+    /**
+     * @ORM\Column(type="string", length=100)
+     */
+    private $wording;
 
-  public function setWording($wording){
-    $this->wording = $wording;
-  }
-  public function getId(){
-    return $this->id;
-  }
+    public function getId(){
+      return $id;
+    }
 
-  public function getWording(){
-    return $this->wording;
-  }
+    public function getWording(){
+      return $this->wording;
+    }
+
+    public function setWording($wording){
+      $this->wording = $wording;
+    }
 }
-?>

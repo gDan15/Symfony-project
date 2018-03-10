@@ -3,12 +3,14 @@
 namespace App\Controller;
 use App\Entity\Note;
 use App\Form\AddNote;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 class MainController extends Controller
 {
     /**
@@ -52,12 +54,12 @@ class MainController extends Controller
         return $this->render('note/homePage.html.twig', array('notes' => $notes, ));
     }
     /**
-    * @Route("/note/edit", name="editNote")
+    * @Route("/note/edit/{id}", name="editNote")
+    * @param Note $note
     *
     */
-    public function editNote(Request $request){
+    public function editNote(Request $request, Note $note){
 
-        $note = new Note;
         //TODO : have to change the names of the buttons in the form
         $form = $this->createForm(AddNote::class, $note);
         $form->handleRequest($request);
@@ -74,15 +76,16 @@ class MainController extends Controller
         ));
     }
     /**
-    * @Route("/note/delete", name="deleteNote")
-    *
+    * @Route("/note/delete/{id}", name="deleteNote")
+    * @param Note $note
+    * @return \Symfony\Component\HttpFoundation\RedirectResponse
     */
     public function deleteNote(Note $note){
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($note);
         $entityManager->flush();
-        return redirectToRoute("home");
-        }
+        return $this->redirectToRoute("home");
     }
 }
+
 ?>
