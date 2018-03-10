@@ -50,6 +50,10 @@ class Note
     }
 
 
+    public function getId(){
+      return $this->id;
+    }
+
     public function getCategory(){
       return $this->category;
     }
@@ -59,7 +63,9 @@ class Note
     }
 
     public function getDate(){
-      return $this->date;
+      if($this->date != null){
+        return $this->date;
+      }
     }
 
     public function getContent(){
