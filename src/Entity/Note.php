@@ -30,6 +30,7 @@ class Note
     private $date;
     /**
      * @ORM\Column(type="string", length=100)
+     * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="wording")
      */
     private $category;
 
