@@ -1,5 +1,5 @@
 <?php
-
+//TODO : add @param and @return to every function
 namespace App\Controller;
 use App\Entity\Category;
 use App\Form\AddCategory;

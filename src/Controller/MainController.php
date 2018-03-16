@@ -1,5 +1,6 @@
 <?php
 // /src/Controller/MainController.php
+//TODO : add @param and @return to every function
 namespace App\Controller;
 use App\Entity\Note;
 use App\Form\AddNote;
