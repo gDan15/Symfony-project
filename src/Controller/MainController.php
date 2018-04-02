@@ -45,7 +45,7 @@ class MainController extends Controller
     }
     /**
     * @Route("/note/home", name="home")
-    *
+    * TODO : is the parameter really necessary in this case ?
     */
     public function home(Request $request)
     {

@@ -2,14 +2,14 @@
 //TODO : add @param and @return to every function
 namespace App\Controller;
 
-use App\Entity\Notes;
+use App\Entity\Note;
 use App\Entity\Category;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-
+use Symfony\Component\HttpFoundation\JsonResponse;
 class ControllerApi extends Controller
 {
     /**
@@ -18,14 +18,14 @@ class ControllerApi extends Controller
      */
     public function index()
     {
-        $entityManager = $this->getDoctrine(Note::class)->getRepository();
+        $entityManager = $this->getDoctrine()->getRepository(Note::class);
         $notes = $entityManager->findAll();
         $data = $this->get('jms_serializer')->serialize($notes, 'json');
         $response = new Response($data);
         $response->headers->set('Content-Type', 'application/json');
         return $response;
     }
-    /**
+    /**TODO : cette fonction ne marche pas.
       * @Route("/note/api/post", name="noteApiPost")
       * @Method({"POST"})
       * @param Request $request
@@ -40,8 +40,30 @@ class ControllerApi extends Controller
          return new JsonResponse(array('status'=>'EMPTY','message'=>'The body of this request is empty.'));
        }
        $note = $this->get('jms_serializer')->deserialize($content, Note::class, 'json');
-       $noteManager->persist($note);
-       $noteManager->flush();
-       $response = new JsonResponse();
+       $entityManager->persist($note);
+       $entityManager->flush();
+
+       $response = new Response(new JsonResponse(array('status'=>'ADDED','message'=>'The request has been added.')));
+       $response->headers->set('Content-Type', 'application/json');
+       return $response;
+       // $response = new JsonResponse();
+    }
+
+    /**
+     * @Route("/note/api/delete/{id}", name="noteApiDelete")
+     * @Method({"DELETE", "GET"})
+     * @param $id
+     */
+    public function deleteNote($id){
+      $note = $this->getDoctrine()->getRepository(Note::class)->find($id);
+      $entityManager=$this->getDoctrine()->getManager();
+      $entityManager->remove($note);
+      $entityManager->flush();
+      return new JsonResponse(
+                array(
+                    'status' => 'DELETED',
+                    'message' => 'This note has been deleted'
+                )
+            );;
     }
 }
