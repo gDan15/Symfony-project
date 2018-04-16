@@ -9,6 +9,8 @@
   <div class = "title-wrapper">
     <h1>Liste des catégories</h1>
   </div>
+  <a href="{{ path('home') }}">Home page</a>
+  <a href="{{ path('addCategory') }}"> Add category</a>
   {% for category in categories %}
     <h2>{{category.getWording}}</h2>
     <a href="{{ path('editCategory', {'id': category.getId() }) }}" class="btn btn-danger">Edit category</a>

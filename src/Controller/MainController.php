@@ -1,5 +1,6 @@
 <?php
 // /src/Controller/MainController.php
+//TODO : add @param and @return to every function
 namespace App\Controller;
 use App\Entity\Note;
 use App\Form\AddNote;
@@ -44,7 +45,7 @@ class MainController extends Controller
     }
     /**
     * @Route("/note/home", name="home")
-    *
+    * TODO : is the parameter really necessary in this case ?
     */
     public function home(Request $request)
     {
