@@ -72,6 +72,9 @@ class MainController extends Controller
             $entityManager->flush();
             return $this->redirectToRoute('home');
         }
+        elseif ($form->isSubmitted() && 'home' === $form->getClickedButton()->getName()) {
+            return $this->redirectToRoute('home');
+        }
         return $this->render('note/addNote.html.twig', array(
             'form' => $form->createView(),
         ));
@@ -88,5 +91,4 @@ class MainController extends Controller
         return $this->redirectToRoute("home");
     }
 }
-
 ?>

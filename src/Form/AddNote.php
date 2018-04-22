@@ -20,7 +20,6 @@ class AddNote extends AbstractType
       ->add('save', SubmitType::class, array('label' => 'Sauvegarder'))
       ->add('home', SubmitType::class, array('label' => "Retour à la page d'accueil"))
       ->getForm();
-    ;
   }
 }
 ?>

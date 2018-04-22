@@ -6,7 +6,9 @@ function wrapText(elementID, openTag, closeTag) {
   var selectedText = textArea.val().substring(start, end);
   var replacement = openTag + selectedText + closeTag;
   textArea.val(textArea.val().substring(0, start) + replacement + textArea.val().substring(end, len));
+
 }
-$('#tag').click(function() {
+$('#addTag').click(function() {
+  console.log("replacement");
   wrapText("notepadbundle_note_content", "<tag>", "</tag>");
 });
