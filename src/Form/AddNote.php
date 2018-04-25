@@ -7,6 +7,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class AddNote extends AbstractType
 {
@@ -14,7 +15,7 @@ class AddNote extends AbstractType
   {
     $builder
       ->add('title', TextType::class, array('label' => 'Titre'))
-      ->add('content', TextType::class, array('label' => 'Contenu'))
+      ->add('content', TextareaType::class, array('label' => 'Contenu'))
       ->add('date', DateType::class, array('label' => 'Date'))
       ->add('category', TextType::class, array('label' => 'Catégorie'))
       ->add('save', SubmitType::class, array('label' => 'Sauvegarder'))

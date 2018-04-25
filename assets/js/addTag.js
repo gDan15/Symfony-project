@@ -1,7 +1,7 @@
 // assets/js/addTag.js
 
 // loads the jquery package from node_modules
-var $ = require('jquery');
+// var $ = require('jquery');
 
 // import the function from greet.js (the .js extension is optional)
 // ./ (or ../) means to look for a local file
@@ -13,19 +13,20 @@ var $ = require('jquery');
 function wrapText(elementID, openTag, closeTag) {
 
   var textArea = $('#' + elementID);
-  alert(textArea);
+  alert(textArea.val());
   var len = textArea.val().length;
+
   var start = textArea[0].selectionStart;
   var end = textArea[0].selectionEnd;
   var selectedText = textArea.val().substring(start, end);
-  alert(selectedText);
+  alert("selectedText");
   var replacement = openTag + selectedText + closeTag;
-  alert(replacement);
+  // alert("replacement");
   textArea.val(textArea.val().substring(0, start) + replacement + textArea.val().substring(end, len));
 }
 $('#addTag').click(function() {
   // alert("Yeah!");
-  wrapText("notepadbundle_note_content", "<tag>", "</tag>");
+  wrapText("add_note_content", "<tag>", "</tag>");
 });
 // window.onload = function() {
 //     if (window.jQuery) {
