@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Note;
 use App\Form\AddNote;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,7 +19,7 @@ class MainController extends Controller
     * @Route("/note/main", name="noteMain")
     *
     */
-    //TODO : change main to addNote
+    //TODO : change main to addNote, add tag in database
     public function main(Request $request)
     {
         $defaults = array(
@@ -51,8 +52,13 @@ class MainController extends Controller
     {
         $repository = $this->getDoctrine()->getRepository(Note::class);
         $notes = $repository->findAll();
-
-        return $this->render('note/homePage.html.twig', array('notes' => $notes, ));
+        // retrieve POST value from the texttype input in html.twig
+        $tag = $request->get('tagSearch');
+        if($tag != null){
+          $arrayTagNotes=$this->searchTag($tag, $notes);
+          $notes=$arrayTagNotes;
+        }
+        return $this->render('note/homePage.html.twig', array('notes' => $notes,));
     }
     /**
     * @Route("/note/edit/{id}", name="editNote")
@@ -89,6 +95,21 @@ class MainController extends Controller
         $entityManager->remove($note);
         $entityManager->flush();
         return $this->redirectToRoute("home");
+    }
+    public function searchTag(string $tag, $notes){
+      foreach ($notes as $note){
+        // $entityManager=$this->getDoctrine()->getManager();
+        // $content=$entityManager->getContent;
+        $content=$note->getContent();
+        $crawler = new Crawler();
+        $crawler->addContent($content);
+        $crawler = $crawler->filterXPath('//tag')->extract('_text');
+        $arrayNotes=array();
+        if($crawler[0] === $tag){
+          array_push($arrayNotes, $note);
+        }
+      }
+      return $arrayNotes;
     }
 }
 ?>

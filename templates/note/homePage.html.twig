@@ -12,6 +12,9 @@
   <a href="{{ path('displayCategories') }}">Display all categories</a>
   <a href="{{ path('addCategory') }}" >Add category</a>
   <a href="{{ path('noteMain') }}" >Add note</a>
+  <form>
+    <input type="text" name="tagSearch" method="post">
+  </form>
   {% for note in notes %}
     <div class="title-wrapper">
       <h2>{{note.getTitle}}</h2>

@@ -13,13 +13,10 @@
 function wrapText(elementID, openTag, closeTag) {
 
   var textArea = $('#' + elementID);
-  alert(textArea.val());
   var len = textArea.val().length;
-
   var start = textArea[0].selectionStart;
   var end = textArea[0].selectionEnd;
   var selectedText = textArea.val().substring(start, end);
-  alert("selectedText");
   var replacement = openTag + selectedText + closeTag;
   // alert("replacement");
   textArea.val(textArea.val().substring(0, start) + replacement + textArea.val().substring(end, len));
