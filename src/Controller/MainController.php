@@ -56,6 +56,7 @@ class MainController extends Controller
         $tag = $request->get('tagSearch');
         if($tag != null){
           $arrayTagNotes=$this->searchTag($tag, $notes);
+          var_dump($arrayTagNotes);
           $notes=$arrayTagNotes;
         }
         return $this->render('note/homePage.html.twig', array('notes' => $notes,));
@@ -97,15 +98,17 @@ class MainController extends Controller
         return $this->redirectToRoute("home");
     }
     public function searchTag(string $tag, $notes){
+      $arrayNotes=array();
       foreach ($notes as $note){
         // $entityManager=$this->getDoctrine()->getManager();
         // $content=$entityManager->getContent;
         $content=$note->getContent();
+        // $crawler = new Crawler('<root><node /></root>');
         $crawler = new Crawler();
         $crawler->addContent($content);
         $crawler = $crawler->filterXPath('//tag')->extract('_text');
-        $arrayNotes=array();
-        if($crawler[0] === $tag){
+
+        if(!empty($crawler) && $crawler[0] === $tag){
           array_push($arrayNotes, $note);
         }
       }

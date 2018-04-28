@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use App\Validator as AcmeAssert;
+
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\NoteRepository")
@@ -22,6 +24,7 @@ class Note
     private $title;
     /**
      * @ORM\Column(type="string", length=100)
+     * 
      */
     private $content;
     /**
