@@ -73,9 +73,13 @@ class MainController extends Controller
         $form->handleRequest($request);
         //TODO : have to change the name of the button in the following if
         if ($form->isSubmitted() && $form->isValid() && 'save' === $form->getClickedButton()->getName()) {
+            var_dump("In if");
             $note = $form->getData();
+
+            var_dump($note->getContent());
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($note);
+
             $entityManager->flush();
             return $this->redirectToRoute('home');
         }
@@ -107,7 +111,7 @@ class MainController extends Controller
         $crawler = new Crawler();
         $crawler->addContent($content);
         $crawler = $crawler->filterXPath('//tag')->extract('_text');
-
+        //TODO : si plusieurs tag dans même TextArea alors cela ne fonctionne pas.
         if(!empty($crawler) && $crawler[0] === $tag){
           array_push($arrayNotes, $note);
         }

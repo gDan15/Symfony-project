@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Validator as AcmeAssert;
+// use Symfony\Component\Constraints as Assert;
+
 
 
 /**
@@ -24,8 +26,9 @@ class Note
     private $title;
     /**
      * @ORM\Column(type="string", length=100)
-     * 
+     *
      */
+     // @AcmeAssert\XmlSource
     private $content;
     /**
      * @ORM\Column(type="datetime")
