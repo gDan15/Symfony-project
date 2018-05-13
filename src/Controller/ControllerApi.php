@@ -26,7 +26,22 @@ class ControllerApi extends Controller
         $response->headers->set('Content-Type', 'application/json');
         return $response;
     }
-    /** TODO : cette fonction ne marche pas.
+    /**
+     * @Route("/note/api/get/{id}", name="noteApiGetOne")
+     * @Method({"GET"})
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     */
+    public function getOneNote($id)
+    {
+        $entityManager=$this->getDoctrine()->getManager();
+        $note = $this->getDoctrine()->getRepository(Note::class)->find($id);
+        $data = $this->get('jms_serializer')->serialize($note, 'json');
+        $response = new Response($data);
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
+    }
+    /**
       * @Route("/note/api/post", name="noteApiPost")
       * @Method({"POST"})
       * @param Request $request
@@ -46,6 +61,7 @@ class ControllerApi extends Controller
 
        $response = new Response(new JsonResponse(array('status'=>'ADDED','message'=>'The request has been added.')));
        $response->headers->set('Content-Type', 'application/json');
+       $response->headers->set('Access-Control-Origin', '*');
        return $response;
        // $response = new JsonResponse();
     }
@@ -77,7 +93,7 @@ class ControllerApi extends Controller
     }
     /**
      * @Route("/note/api/put/{id}", name="noteApiPut")
-     * @Method("PUT")
+     * @Method({"PUT", "GET"})
      * @param $id
      */
      public function editNote($id, Request $request){
@@ -97,6 +113,12 @@ class ControllerApi extends Controller
       $note->setDate($contentRequest->getDate());
       $note->setCategory($contentRequest->getCategory());
       $entityManager->flush();
-      return new JsonResponse(array('status'=>'MODIFIED', 'message'=>'Note successfully modified'));
+      $response = new JsonResponse(
+                array('status' => 'Note Updated',
+                    'data' => 'Note has been updated'));
+      $response->headers->set('Content-Type','application/json');
+      $response->headers->set('Access-Control-Origin', '*');
+      $response->setStatusCode(200);
+      return $response;
     }
 }
