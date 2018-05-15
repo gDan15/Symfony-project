@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CategoryRepository")
@@ -15,11 +16,18 @@ class Category
      * @ORM\Column(type="integer")
      */
     private $id;
-
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Note", mappedBy="category", cascade={"remove"})
+     */
+    private $notes;
     /**
      * @ORM\Column(type="string", length=100)
      */
     private $wording;
+    public function __construct()
+    {
+        $this->notes = new ArrayCollection();
+    }
 
     public function getId(){
       return $this->id;
@@ -29,7 +37,25 @@ class Category
       return $this->wording;
     }
 
-    public function setWording($wording){
-      $this->wording = $wording;
+    public function setWording($name){
+      $this->wording = $name;
     }
+    /**
+    * @return Collection|Note[]
+    */
+    public function getNotes() : ArrayCollection{
+      return $this->notes;
+    }
+    // public function removeNote(Note $note): self
+    // {
+    //     if ($this->notes->contains($note)) {
+    //         $this->notes->removeElement($note);
+    //         // set the owning side to null (unless already changed)
+    //         if ($note->getCategory() === $this) {
+    //             $note->setCategory(null);
+    //         }
+    //     }
+    //
+    //     return $this;
+    // }
 }

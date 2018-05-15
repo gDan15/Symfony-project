@@ -1,7 +1,7 @@
 <?php
 // src/Form/TaskType.php
 namespace App\Form;
-
+use App\Entity\Category;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -17,7 +17,7 @@ class AddNote extends AbstractType
       ->add('title', TextType::class, array('label' => 'Titre'))
       ->add('content', TextareaType::class, array('label' => 'Contenu'))
       ->add('date', DateType::class, array('label' => 'Date'))
-      ->add('category', TextType::class, array('label' => 'Catégorie'))
+      ->add('category',AddCategoryType::class, array('label' => 'Catégorie'))
       ->add('save', SubmitType::class, array('label' => 'Sauvegarder'))
       ->add('home', SubmitType::class, array('label' => "Retour à la page d'accueil"))
       ->getForm();

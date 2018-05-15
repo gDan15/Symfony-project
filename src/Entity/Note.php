@@ -35,13 +35,14 @@ class Note
      */
     private $date;
     /**
-     * @ORM\Column(type="string", length=100)
-     * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="wording")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="notes")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $category;
 
-    public function setCategory($category){
-      $this->category = $category;
+    public function setCategory(?Category $category):self{
+        $this->category = $category;
+      return $this;
     }
 
     public function setTitle($title){
@@ -61,7 +62,7 @@ class Note
       return $this->id;
     }
 
-    public function getCategory(){
+    public function getCategory(): ?Category{
       return $this->category;
     }
 

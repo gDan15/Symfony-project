@@ -18,7 +18,18 @@ class CategoryRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Category::class);
     }
-
+    public function findOneByIdJoinedToCategory($noteId)
+    {
+        return $this->createQueryBuilder('p')
+            // p.category refers to the "category" property on product
+            ->innerJoin('p.category', 'c')
+            // selects all the category data to avoid the query
+            ->addSelect('c')
+            ->andWhere('p.id = :id')
+            ->setParameter('id', $noteId)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
     /*
     public function findBySomething($value)
     {
