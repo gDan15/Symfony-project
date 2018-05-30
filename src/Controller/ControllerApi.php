@@ -24,6 +24,7 @@ class ControllerApi extends Controller
         $data = $this->get('jms_serializer')->serialize($notes, 'json');
         $response = new Response($data);
         $response->headers->set('Content-Type', 'application/json');
+        $response->headers->set('Access-Control-Allow-Origin', '*');
         return $response;
     }
     /**
@@ -39,6 +40,7 @@ class ControllerApi extends Controller
         $data = $this->get('jms_serializer')->serialize($note, 'json');
         $response = new Response($data);
         $response->headers->set('Content-Type', 'application/json');
+        $response->headers->set('Access-Control-Allow-Origin', '*');
         return $response;
     }
     /**
@@ -61,7 +63,7 @@ class ControllerApi extends Controller
 
        $response = new Response(new JsonResponse(array('status'=>'ADDED','message'=>'The request has been added.')));
        $response->headers->set('Content-Type', 'application/json');
-       $response->headers->set('Access-Control-Origin', '*');
+       $response->headers->set('Access-Control-Allow-Origin', '*');
        return $response;
        // $response = new JsonResponse();
     }
@@ -117,7 +119,7 @@ class ControllerApi extends Controller
                 array('status' => 'Note Updated',
                     'data' => 'Note has been updated'));
       $response->headers->set('Content-Type','application/json');
-      $response->headers->set('Access-Control-Origin', '*');
+      $response->headers->set('Access-Control-Allow-Origin', '*');
       $response->setStatusCode(200);
       return $response;
     }
