@@ -25,6 +25,7 @@ class CategoryApiController extends Controller
       $data = $this->get('jms_serializer')->serialize($notes, 'json');
       $response = new Response($data);
       $response->headers->set('Content-Type', 'application/json');
+      $response->headers->set('Access-Control-Allow-Origin', '*');
       return $response;
     }
     /**
@@ -40,6 +41,7 @@ class CategoryApiController extends Controller
         $data = $this->get('jms_serializer')->serialize($category, 'json');
         $response = new Response($data);
         $response->headers->set('Content-Type', 'application/json');
+        $response->headers->set('Access-Control-Allow-Origin', '*');
         return $response;
     }
     /**
@@ -62,7 +64,7 @@ class CategoryApiController extends Controller
 
        $response = new Response(new JsonResponse(array('status'=>'ADDED','message'=>'The request has been added.')));
        $response->headers->set('Content-Type', 'application/json');
-       $response->headers->set('Access-Control-All-Origin', '*');
+       $response->headers->set('Access-Control-Allow-Origin', '*');
        return $response;
        // $response = new JsonResponse();
     }
@@ -117,7 +119,7 @@ class CategoryApiController extends Controller
                     'data' => 'Category has been updated'));
 
       $response->headers->set('Content-Type','application/json');
-      $response->headers->set('Access-Control-Origin', '*');
+      $response->headers->set('Access-Control-Allow-Origin', '*');
       $response->setStatusCode(200);
       return $response;
     }
