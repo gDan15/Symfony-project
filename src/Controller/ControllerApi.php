@@ -51,13 +51,35 @@ class ControllerApi extends Controller
       */
     public function newNote(Request $request)
     {
-       $entityManager = $this->getDoctrine()->getManager();
+       // NOTE : necessary ?
+       $category = new Category();
+       $note = new Note();
+
+       $doctrine = $this->getDoctrine();
+       $entityManager = $doctrine->getManager();
        $content = $request->getContent();
+
        if(empty($content))
        {
          return new JsonResponse(array('status'=>'EMPTY','message'=>'The body of this request is empty.'));
        }
-       $note = $this->get('jms_serializer')->deserialize($content, Note::class, 'json');
+       $repositoryCategory = $doctrine->getRepository(Category::class);
+       $contentRequest = $this->get('jms_serializer')->deserialize($content, Note::class, 'json');
+       // The name of the category inserted by the user.
+       $categoryName = $contentRequest->getCategory()->getWording();
+       // Search "Category" in the table to see if the name already exists.
+       $category = $repositoryCategory->findOneBy(array('wording' => $categoryName));
+       // If the category doesn't exist in the table insert it in the last.
+       if(is_null($category)){
+         $category = new Category();
+         $category->setWording($contentRequest->getCategory()->getWording());
+         $entityManager->persist($category);
+       }
+       $note->setTitle($contentRequest->getTitle());
+       $note->setContent($contentRequest->getContent());
+       $note->setDate($contentRequest->getDate());
+       $note->setCategory($category);
+
        $entityManager->persist($note);
        $entityManager->flush();
 
@@ -99,7 +121,9 @@ class ControllerApi extends Controller
      * @param $id
      */
      public function editNote($id, Request $request){
-      $entityManager=$this->getDoctrine()->getManager();
+      $category = new Category();
+      $doctrine = $this->getDoctrine();
+      $entityManager = $doctrine->getManager();
       $note = $this->getDoctrine()->getRepository(Note::class)->find($id);
       $content = $request->getContent();
       if(empty($content))
@@ -110,11 +134,20 @@ class ControllerApi extends Controller
         return new JsonResponse(array('status'=>'UNKNOWN', 'message'=>"Note doesn't exist"));
       }
       $contentRequest = $this->get('jms_serializer')->deserialize($content, Note::class, 'json');
+      // The name of the category inserted by the user.
+      $categoryName = $contentRequest->getCategory()->getWording();
+
+      $category->setWording($contentRequest->getCategory()->getWording());
+      $entityManager->persist($category);
+
       $note->setTitle($contentRequest->getTitle());
       $note->setContent($contentRequest->getContent());
       $note->setDate($contentRequest->getDate());
-      $note->setCategory($contentRequest->getCategory());
+      $note->setCategory($category);
+
+      $entityManager->persist($note);
       $entityManager->flush();
+
       $response = new JsonResponse(
                 array('status' => 'Note Updated',
                     'data' => 'Note has been updated'));
