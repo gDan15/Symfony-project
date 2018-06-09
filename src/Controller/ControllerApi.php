@@ -45,7 +45,7 @@ class ControllerApi extends Controller
     }
     /**
       * @Route("/note/api/post", name="noteApiPost")
-      * @Method({"POST"})
+      * @Method({"POST", "GET"})
       * @param Request $request
       * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
       */
@@ -58,7 +58,7 @@ class ControllerApi extends Controller
        $doctrine = $this->getDoctrine();
        $entityManager = $doctrine->getManager();
        $content = $request->getContent();
-
+       var_dump($content);
        if(empty($content))
        {
          return new JsonResponse(array('status'=>'EMPTY','message'=>'The body of this request is empty.'));
