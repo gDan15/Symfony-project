@@ -3,6 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Manage note application{% endblock %}</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
         {% block stylesheets %}
         <style>
             .title-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 10px/1.5 sans-serif; }
@@ -13,6 +14,37 @@
 
             .contenue-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 10px/1.5 sans-serif; }
             .contenue-wrapper { background: #cccccc; padding: 2px 6px; }
+            input[type=text] {
+              width: 100px;
+              box-sizing: border-box;
+              border: 2px solid #ccc;
+              border-radius: 4px;
+              font-size: 16px;
+              background-color: white;
+              /* background-image: url('searchicon.png'); */
+              background-position: 10px 10px;
+              background-repeat: no-repeat;
+              padding: 12px 20px 12px 20px;
+              -webkit-transition: width 0.4s ease-in-out;
+              transition: width 0.4s ease-in-out;
+            }
+
+            input[type=text]:focus {
+                width: 100%;
+            }
+            header{
+              text-decoration: none;
+              margin-left: 100px;
+              font-variant: small-caps;
+            }
+            div{
+              text-decoration: none;
+              margin-left: 100px;
+              background: #D0F0F2;
+              font-variant: normal;
+            }
+            h1 { font-family: "Great Vibes", cursive; font-size: 60px; line-height: 170px; font-weight: normal; margin-bottom: 0px; margin-top: 10px; text-align: center; text-shadow: 0 1px 1px #fff; }
+
         </style>
         {% endblock %}
     </head>
