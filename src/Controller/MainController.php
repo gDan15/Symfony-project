@@ -3,8 +3,11 @@
 //TODO : add @param and @return to every function
 namespace App\Controller;
 use App\Entity\Note;
+use App\Entity\Category;
 use App\Form\AddNote;
+
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,22 +21,44 @@ class MainController extends Controller
     * @Route("/note/main", name="noteMain")
     *
     */
-    //TODO : change main to addNote
+    //TODO : change main to addNote, add tag in database
     public function main(Request $request)
     {
         $defaults = array(
             'dueDate' => new \DateTime('tomorrow'),
         );
+        // NOTE : necessary ?
+        $category = new Category();
         $note = new Note();
-
         $form = $this->createForm(AddNote::class, $note);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid() && 'save' === $form->getClickedButton()->getName()) {
-            // $note = $form->getData();
-            $entityManager = $this->getDoctrine()->getManager();
+
+            $doctrine = $this->getDoctrine();
+            $entityManager = $doctrine->getManager();
+
+            $repositoryCategory = $doctrine->getRepository(Category::class);
+            // The name of the category inserted by the user.
+            $categoryNameForm = $form->get('category')->getData()->getWording();
+            // Search "Category" in the table to see if the name already exists.
+            $category = $repositoryCategory->findOneBy(array('wording' => $form->get('category')->getData()->getWording()));
+            // If the category doesn't exist in the table insert it in the last.
+            if(is_null($category)){
+              $category = new Category();
+              $category->setWording($form->get('category')->getData()->getWording());
+              $entityManager->persist($category);
+            }
+            // Take the informations entered in the form by the user.
+            $note->setTitle($form->get('title')->getData());
+            $note->setContent($form->get('content')->getData());
+            $note->setDate($form->get('date')->getData());
+            $note->setCategory($category);
+
             $entityManager->persist($note);
             $entityManager->flush();
+
             return $this->redirectToRoute('home');
         }
         elseif ($form->isSubmitted() && 'home' === $form->getClickedButton()->getName()) {
@@ -45,14 +70,20 @@ class MainController extends Controller
     }
     /**
     * @Route("/note/home", name="home")
-    * TODO : is the parameter really necessary in this case ?
     */
     public function home(Request $request)
     {
         $repository = $this->getDoctrine()->getRepository(Note::class);
         $notes = $repository->findAll();
-
-        return $this->render('note/homePage.html.twig', array('notes' => $notes, ));
+        // retrieve POST value from the texttype input in html.twig
+        $tag = $request->get('tagSearch');
+        if($tag != null){
+          $arrayTagNotes=$this->searchTag($tag, $notes);
+          $notes=$arrayTagNotes;
+        }
+        return $this->render('note/homePage.html.twig', array(
+            'notes' => $notes,
+        ));
     }
     /**
     * @Route("/note/edit/{id}", name="editNote")
@@ -65,16 +96,26 @@ class MainController extends Controller
         $form = $this->createForm(AddNote::class, $note);
         $form->handleRequest($request);
         //TODO : have to change the name of the button in the following if
-        if ($form->isSubmitted() && $form->isValid() && 'save' === $form->getClickedButton()->getName()) {
+        if ($form->isSubmitted() && 'save' === $form->getClickedButton()->getName()) {
             $note = $form->getData();
+            // if(empty($note->getCategory()->getWording())){
+            //   throw $this->createNotFoundException(
+            //     'No product found for id '
+            //   );
+            // }
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($note);
             $entityManager->flush();
             return $this->redirectToRoute('home');
         }
-        return $this->render('note/addNote.html.twig', array(
-            'form' => $form->createView(),
-        ));
+        elseif ($form->isSubmitted() && 'home' === $form->getClickedButton()->getName()) {
+            return $this->redirectToRoute('home');
+        }
+        else{
+          return $this->render('note/editNote.html.twig', array(
+              'form' => $form->createView(),
+          ));
+        }
     }
     /**
     * @Route("/note/delete/{id}", name="deleteNote")
@@ -87,6 +128,22 @@ class MainController extends Controller
         $entityManager->flush();
         return $this->redirectToRoute("home");
     }
+    public function searchTag(string $tag, $notes){
+      $arrayNotes=array();
+      foreach ($notes as $note){
+        // $entityManager=$this->getDoctrine()->getManager();
+        // $content=$entityManager->getContent;
+        $content=$note->getContent();
+        // $crawler = new Crawler('<root><node /></root>');
+        $crawler = new Crawler();
+        $crawler->addContent($content);
+        $crawler = $crawler->filterXPath('//tag')->extract('_text');
+        //TODO : si plusieurs tag dans même TextArea alors cela ne fonctionne pas.
+        if(!empty($crawler) && $crawler[0] === $tag){
+          array_push($arrayNotes, $note);
+        }
+      }
+      return $arrayNotes;
+    }
 }
-
 ?>

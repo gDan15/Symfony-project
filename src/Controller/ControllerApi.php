@@ -24,28 +24,68 @@ class ControllerApi extends Controller
         $data = $this->get('jms_serializer')->serialize($notes, 'json');
         $response = new Response($data);
         $response->headers->set('Content-Type', 'application/json');
+        $response->headers->set('Access-Control-Allow-Origin', '*');
         return $response;
     }
-    /** TODO : cette fonction ne marche pas.
+    /**
+     * @Route("/note/api/get/{id}", name="noteApiGetOne")
+     * @Method({"GET"})
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     */
+    public function getOneNote($id)
+    {
+        $entityManager=$this->getDoctrine()->getManager();
+        $note = $this->getDoctrine()->getRepository(Note::class)->find($id);
+        $data = $this->get('jms_serializer')->serialize($note, 'json');
+        $response = new Response($data);
+        $response->headers->set('Content-Type', 'application/json');
+        $response->headers->set('Access-Control-Allow-Origin', '*');
+        return $response;
+    }
+    /**
       * @Route("/note/api/post", name="noteApiPost")
-      * @Method({"POST"})
+      * @Method({"POST", "GET"})
       * @param Request $request
       * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
       */
     public function newNote(Request $request)
     {
-       $entityManager = $this->getDoctrine()->getManager();
+       // NOTE : necessary ?
+       $category = new Category();
+       $note = new Note();
+
+       $doctrine = $this->getDoctrine();
+       $entityManager = $doctrine->getManager();
        $content = $request->getContent();
+       var_dump($content);
        if(empty($content))
        {
          return new JsonResponse(array('status'=>'EMPTY','message'=>'The body of this request is empty.'));
        }
-       $note = $this->get('jms_serializer')->deserialize($content, Note::class, 'json');
+       $repositoryCategory = $doctrine->getRepository(Category::class);
+       $contentRequest = $this->get('jms_serializer')->deserialize($content, Note::class, 'json');
+       // The name of the category inserted by the user.
+       $categoryName = $contentRequest->getCategory()->getWording();
+       // Search "Category" in the table to see if the name already exists.
+       $category = $repositoryCategory->findOneBy(array('wording' => $categoryName));
+       // If the category doesn't exist in the table insert it in the last.
+       if(is_null($category)){
+         $category = new Category();
+         $category->setWording($contentRequest->getCategory()->getWording());
+         $entityManager->persist($category);
+       }
+       $note->setTitle($contentRequest->getTitle());
+       $note->setContent($contentRequest->getContent());
+       $note->setDate($contentRequest->getDate());
+       $note->setCategory($category);
+
        $entityManager->persist($note);
        $entityManager->flush();
 
        $response = new Response(new JsonResponse(array('status'=>'ADDED','message'=>'The request has been added.')));
        $response->headers->set('Content-Type', 'application/json');
+       $response->headers->set('Access-Control-Allow-Origin', '*');
        return $response;
        // $response = new JsonResponse();
     }
@@ -77,11 +117,13 @@ class ControllerApi extends Controller
     }
     /**
      * @Route("/note/api/put/{id}", name="noteApiPut")
-     * @Method("PUT")
+     * @Method({"PUT", "GET"})
      * @param $id
      */
      public function editNote($id, Request $request){
-      $entityManager=$this->getDoctrine()->getManager();
+      $category = new Category();
+      $doctrine = $this->getDoctrine();
+      $entityManager = $doctrine->getManager();
       $note = $this->getDoctrine()->getRepository(Note::class)->find($id);
       $content = $request->getContent();
       if(empty($content))
@@ -92,11 +134,26 @@ class ControllerApi extends Controller
         return new JsonResponse(array('status'=>'UNKNOWN', 'message'=>"Note doesn't exist"));
       }
       $contentRequest = $this->get('jms_serializer')->deserialize($content, Note::class, 'json');
+      // The name of the category inserted by the user.
+      $categoryName = $contentRequest->getCategory()->getWording();
+
+      $category->setWording($contentRequest->getCategory()->getWording());
+      $entityManager->persist($category);
+
       $note->setTitle($contentRequest->getTitle());
       $note->setContent($contentRequest->getContent());
       $note->setDate($contentRequest->getDate());
-      $note->setCategory($contentRequest->getCategory());
+      $note->setCategory($category);
+
+      $entityManager->persist($note);
       $entityManager->flush();
-      return new JsonResponse(array('status'=>'MODIFIED', 'message'=>'Note successfully modified'));
+
+      $response = new JsonResponse(
+                array('status' => 'Note Updated',
+                    'data' => 'Note has been updated'));
+      $response->headers->set('Content-Type','application/json');
+      $response->headers->set('Access-Control-Allow-Origin', '*');
+      $response->setStatusCode(200);
+      return $response;
     }
 }

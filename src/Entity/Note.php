@@ -3,6 +3,11 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use App\Validator as AcmeAssert;
+// use Symfony\Component\Constraints as Assert;
+
+
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\NoteRepository")
@@ -18,24 +23,30 @@ class Note
 
     /**
      * @ORM\Column(type="string", length=100)
+     * * @Assert\NotBlank(message="Veuillez entrer une valeur")
      */
     private $title;
     /**
      * @ORM\Column(type="string", length=100)
+     * @Assert\NotBlank(message="Veuillez entrer une valeur")
      */
+     // @AcmeAssert\XmlSource
     private $content;
     /**
      * @ORM\Column(type="datetime")
      */
     private $date;
     /**
-     * @ORM\Column(type="string", length=100)
-     * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="wording")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="notes")
+     * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotBlank(message="Veuillez entrer une valeur")
+     * @Assert\NotNull(message="Veuillez entrer une valeur")
      */
     private $category;
 
-    public function setCategory($category){
-      $this->category = $category;
+    public function setCategory(?Category $category):self{
+        $this->category = $category;
+      return $this;
     }
 
     public function setTitle($title){
@@ -55,7 +66,7 @@ class Note
       return $this->id;
     }
 
-    public function getCategory(){
+    public function getCategory(): ?Category{
       return $this->category;
     }
 

@@ -6,14 +6,20 @@
 {% block stylesheets %}{{parent()}}{% endblock %}
 
 {% block body %}
-  <div class = "title-wrapper">
-    <h1>Liste des catégories</h1>
-  </div>
-  <a href="{{ path('home') }}">Home page</a>
-  <a href="{{ path('addCategory') }}"> Add category</a>
+  <h1>Liste des catégories</h1>
+  <nav class="navbar navbar-default">
+    <ul class="nav navbar-nav">
+      <a href="{{ path('home') }}" role="button" class="btn btn-primary a-btn-slide-text">Home page</a>
+      <a href="{{ path('addCategory') }}" role="button" class="btn btn-primary a-btn-slide-text"> Add category</a>
+    </ul>
+  </nav>
   {% for category in categories %}
-    <h2>{{category.getWording}}</h2>
-    <a href="{{ path('editCategory', {'id': category.getId() }) }}" class="btn btn-danger">Edit category</a>
-    <a href="{{ path('deleteCategory', {'id': category.getId() }) }}" class="btn btn-danger">Delete category</a>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h2>{{category.getWording}}</h2>
+        <a href="{{ path('editCategory', {'id': category.getId() }) }}" class="btn btn-primary a-btn-slide-text"><span class="glyphicon glyphicon-edit" aria-hidden="true"/></a>
+        <a href="{{ path('deleteCategory', {'id': category.getId() }) }}" class="btn btn-danger a-btn-slide-text"><span class="glyphicon glyphicon-remove" aria-hidden="true"/></a>
+      </div>
+    </div>
   {% endfor %}
 {% endblock %}

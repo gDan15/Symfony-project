@@ -8,6 +8,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+
+
 class CategoryController extends Controller
 {
   /**
@@ -30,7 +33,10 @@ class CategoryController extends Controller
       $entityManager = $this->getDoctrine()->getManager();
       $entityManager->persist($category);
       $entityManager->flush();
-      return $this->redirectToRoute('home');
+      return $this->redirectToRoute('displayCategories');
+    }
+    elseif ($form->isSubmitted() && 'listCategory' === $form->getClickedButton()->getName()){
+      return $this->redirectToRoute('displayCategories');
     }
     return $this->render('category/addCategory.html.twig', array(
         'form' => $form->createView(),
@@ -49,11 +55,16 @@ class CategoryController extends Controller
       $entityManager = $this->getDoctrine()->getManager();
       $entityManager->persist($category);
       $entityManager->flush();
-      return $this->redirectToRoute('home');
+      return $this->redirectToRoute('displayCategories');
     }
-    return $this->render('category/addCategory.html.twig', array(
-        'form' => $form->createView(),
-    ));
+    elseif ($form->isSubmitted() && 'listCategory' === $form->getClickedButton()->getName()){
+      return $this->redirectToRoute('displayCategories');
+    }
+    else{
+      return $this->render('category/addCategory.html.twig', array(
+          'form' => $form->createView(),
+      ));
+    }
   }
   /**
    * @Route("/category/delete/{id}", name="deleteCategory")

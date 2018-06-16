@@ -1,26 +1,36 @@
 {% extends 'base.html.twig' %}
-
+{# {% form_theme form 'bootstrap_4_layout.html.twig' %} #}
 
 {% block title %}{{parent()}}{% endblock %}
 
 {% block stylesheets %}{{parent()}}{% endblock %}
 
 {% block body %}
-  <div class="example-wrapper">
-      <h1>Bienvenue sur l application MyNotes !</h1>
-  </div>
-  <a href="{{ path('displayCategories') }}">Display all categories</a>
-  <a href="{{ path('addCategory') }}" >Add category</a>
-  <a href="{{ path('noteMain') }}" >Add note</a>
+  <h1>MyNotes</h1>
+    <nav class="navbar navbar-default">
+      <ul class="nav navbar-nav">
+        <a href="{{ path('displayCategories') }}" role="button" class="btn btn-primary a-btn-slide-text">Display all categories</a>
+        <a href="{{ path('addCategory') }}" role="button" class="btn btn-primary a-btn-slide-text">Add category</a>
+        <a href="{{ path('noteMain') }}" role="button" class="btn btn-primary a-btn-slide-text">Add note</a>
+      </ul>
+    </nav>
+  <nav class="navbar navbar-default">
+      <form>
+        <input type="text" name="tagSearch" placeholder="Search a tag" method="post">
+      </form>
+  </nav>
   {% for note in notes %}
-    <div class="title-wrapper">
-      <h2>{{note.getTitle}}</h2>
-      <p>{{note.getCategory}} - {{note.getDate()|date('Y-m-d')}}</p>
-      <div class="contenue-wrapper">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h2>{{note.getTitle}}</h2>
+        <p>{{note.getCategory.getWording}} - {{note.getDate()|date('Y-m-d')}}</p>
+      </div>
+      <div class="panel-body">
         <p>{{note.getContent}}</p>
+        <a href="{{ path('editNote', {'id': note.getId() }) }}" class="btn btn-primary a-btn-slide-text"><span class="glyphicon glyphicon-edit" aria-hidden="true"/></a>
+        <a href="{{ path('deleteNote', {'id': note.getId() }) }}" class="btn btn-danger a-btn-slide-text"><span class="glyphicon glyphicon-remove" aria-hidden="true"/></a>
       </div>
     </div>
-    <a href="{{ path('editNote', {'id': note.getId() }) }}" class="btn btn-primary">Edit note</a>
-    <a href="{{ path('deleteNote', {'id': note.getId() }) }}" class="btn btn-danger">Delete note</a>
+
   {% endfor %}
 {% endblock %}
