@@ -96,8 +96,13 @@ class MainController extends Controller
         $form = $this->createForm(AddNote::class, $note);
         $form->handleRequest($request);
         //TODO : have to change the name of the button in the following if
-        if ($form->isSubmitted() && $form->isValid() && 'save' === $form->getClickedButton()->getName()) {
+        if ($form->isSubmitted() && 'save' === $form->getClickedButton()->getName()) {
             $note = $form->getData();
+            // if(empty($note->getCategory()->getWording())){
+            //   throw $this->createNotFoundException(
+            //     'No product found for id '
+            //   );
+            // }
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($note);
             $entityManager->flush();
@@ -106,9 +111,11 @@ class MainController extends Controller
         elseif ($form->isSubmitted() && 'home' === $form->getClickedButton()->getName()) {
             return $this->redirectToRoute('home');
         }
-        return $this->render('note/addNote.html.twig', array(
-            'form' => $form->createView(),
-        ));
+        else{
+          return $this->render('note/editNote.html.twig', array(
+              'form' => $form->createView(),
+          ));
+        }
     }
     /**
     * @Route("/note/delete/{id}", name="deleteNote")

@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use App\Validator as AcmeAssert;
 // use Symfony\Component\Constraints as Assert;
 
@@ -22,11 +23,12 @@ class Note
 
     /**
      * @ORM\Column(type="string", length=100)
+     * * @Assert\NotBlank(message="Veuillez entrer une valeur")
      */
     private $title;
     /**
      * @ORM\Column(type="string", length=100)
-     *
+     * @Assert\NotBlank(message="Veuillez entrer une valeur")
      */
      // @AcmeAssert\XmlSource
     private $content;
@@ -37,6 +39,8 @@ class Note
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="notes")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotBlank(message="Veuillez entrer une valeur")
+     * @Assert\NotNull(message="Veuillez entrer une valeur")
      */
     private $category;
 

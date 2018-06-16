@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Entity;
-
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -22,6 +22,8 @@ class Category
     private $notes;
     /**
      * @ORM\Column(type="string", length=100)
+     * @Assert\NotBlank(message="Veuillez entrer une valeur")
+     * @Assert\NotNull(message="Veuillez entrer une valeur")
      */
     private $wording;
     public function __construct()
