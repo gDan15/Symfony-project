@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\Note;
 use App\Entity\Category;
 use App\Form\AddNote;
-
+use App\Controller\CategoryController;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\DomCrawler\Crawler;
@@ -96,35 +96,24 @@ class MainController extends Controller
         $form = $this->createForm(AddNote::class, $note);
         $form->handleRequest($request);
         if ($form->isSubmitted() && 'save' === $form->getClickedButton()->getName()) {
-            // $doctrine = $this->getDoctrine();
-            // $entityManager = $doctrine->getManager();
-            // $category = new Category();
-            // $category->setWording("test2");
-            // $entityManager->persist($category);
-            //   $entityManager->flush();
-// ###################################################################################################################################
-            $doctrine = $this->getDoctrine();
+           $doctrine = $this->getDoctrine();
             $entityManager = $doctrine->getManager();
             $repositoryCategory = $doctrine->getRepository(Category::class);
             $searchCategory =$repositoryCategory->findOneBy(['wording' =>$form->get('category')->getData()->getWording()]);
+            $category = $note->getCategory();
+            // $unknownCategory = $repositoryCategory->findOneBy(['wording' =>"Unknown"]);
+            // $category->removeNote($note, $unknownCategory);
+            // $entityManager->persist($category);
             if(!is_null($searchCategory)){
-              // $note=$form->getData();
-              $note->setTitle($form->get('title')->getData());
-              $note->setContent($form->get('content')->getData());
-              $note->setDate($form->get('date')->getData());
               $note->setCategory($searchCategory);
-              // $searchCategory->addNote($note);
-              // $category->setWording('test');
-              // $note->setCategory($category);
-              $entityManager->flush();
-            }
-            else{
-              $category = new Category();
-              $category->setWording($form->get('category')->getData()->getWording());
-              $entityManager->persist($category);
-              $entityManager->flush();
             }
 
+
+            // $note->setCategory($form->get('category')->getData());
+            // $note->setTitle($form->get('title')->getData());
+            // $note->setContent($form->get('content')->getData());
+            // $note->setDate($form->get('date')->getData());
+            $entityManager->flush();
             // $entityManager->persist($note);
             return $this->redirectToRoute('home');
         }
