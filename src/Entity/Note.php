@@ -23,12 +23,14 @@ class Note
 
     /**
      * @ORM\Column(type="string", length=100)
-     * * @Assert\NotBlank(message="Veuillez entrer une valeur")
+     * @Assert\NotBlank(message="Veuillez entrer une valeur")
+     * @Assert\NotNull(message="Veuillez entrer une valeur")
      */
     private $title;
     /**
      * @ORM\Column(type="string", length=100)
      * @Assert\NotBlank(message="Veuillez entrer une valeur")
+     * @Assert\NotNull(message="Veuillez entrer une valeur")
      */
      // @AcmeAssert\XmlSource
     private $content;
@@ -43,6 +45,10 @@ class Note
      * @Assert\NotNull(message="Veuillez entrer une valeur")
      */
     private $category;
+    /**
+    * @ORM\Column(type="integer")
+    */
+    private $category_id;
 
     public function setCategory(?Category $category):self{
         $this->category = $category;
@@ -66,6 +72,10 @@ class Note
       return $this->id;
     }
 
+    public function getCategoryId(){
+      return $this->category_id;
+    }
+
     public function getCategory(): ?Category{
       return $this->category;
     }
@@ -79,7 +89,6 @@ class Note
         return $this->date;
       }
     }
-
     public function getContent(){
       return $this->content;
     }

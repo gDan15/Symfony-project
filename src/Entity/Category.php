@@ -17,7 +17,7 @@ class Category
      */
     private $id;
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Note", mappedBy="category", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="App\Entity\Note", mappedBy="category")
      */
     private $notes;
     /**
@@ -25,7 +25,7 @@ class Category
      * @Assert\NotBlank(message="Veuillez entrer une valeur")
      * @Assert\NotNull(message="Veuillez entrer une valeur")
      */
-    private $wording;
+    private $wording='myDefaultValue';
     public function __construct()
     {
         $this->notes = new ArrayCollection();
@@ -48,16 +48,24 @@ class Category
     public function getNotes() : ArrayCollection{
       return $this->notes;
     }
-    // public function removeNote(Note $note): self
-    // {
-    //     if ($this->notes->contains($note)) {
-    //         $this->notes->removeElement($note);
-    //         // set the owning side to null (unless already changed)
-    //         if ($note->getCategory() === $this) {
-    //             $note->setCategory(null);
-    //         }
-    //     }
-    //
-    //     return $this;
+
+    public function addNote(Note $note){
+      $this->notes->add($note);
+    }
+    public function removeNote(Note $note, Category $category): self
+    {
+        if ($this->notes->contains($note)) {
+            $this->notes->removeElement($note);
+            // set the owning side to null (unless already changed)
+            if ($note->getCategory() === $this) {
+                $note->setCategory($category);
+            }
+        }
+
+        return $this;
+    }
+    // public function removeNote(Note $note){
+    //   $this->notes->removeElement($note);
+    //   // $note->setCategory();
     // }
 }
