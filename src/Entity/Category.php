@@ -48,6 +48,10 @@ class Category
     public function getNotes() : ArrayCollection{
       return $this->notes;
     }
+
+    public function addNote(Note $note){
+      $this->notes->add($note);
+    }
     // public function removeNote(Note $note): self
     // {
     //     if ($this->notes->contains($note)) {

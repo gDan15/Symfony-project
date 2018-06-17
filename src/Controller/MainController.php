@@ -6,6 +6,7 @@ use App\Entity\Note;
 use App\Entity\Category;
 use App\Form\AddNote;
 
+
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\Routing\Annotation\Route;
@@ -92,20 +93,39 @@ class MainController extends Controller
     */
     public function editNote(Request $request, Note $note){
 
-        //TODO : have to change the names of the buttons in the form
         $form = $this->createForm(AddNote::class, $note);
         $form->handleRequest($request);
-        //TODO : have to change the name of the button in the following if
         if ($form->isSubmitted() && 'save' === $form->getClickedButton()->getName()) {
-            $note = $form->getData();
-            // if(empty($note->getCategory()->getWording())){
-            //   throw $this->createNotFoundException(
-            //     'No product found for id '
-            //   );
-            // }
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($note);
-            $entityManager->flush();
+            // $doctrine = $this->getDoctrine();
+            // $entityManager = $doctrine->getManager();
+            // $category = new Category();
+            // $category->setWording("test2");
+            // $entityManager->persist($category);
+            //   $entityManager->flush();
+// ###################################################################################################################################
+            $doctrine = $this->getDoctrine();
+            $entityManager = $doctrine->getManager();
+            $repositoryCategory = $doctrine->getRepository(Category::class);
+            $searchCategory =$repositoryCategory->findOneBy(['wording' =>$form->get('category')->getData()->getWording()]);
+            if(!is_null($searchCategory)){
+              // $note=$form->getData();
+              $note->setTitle($form->get('title')->getData());
+              $note->setContent($form->get('content')->getData());
+              $note->setDate($form->get('date')->getData());
+              $note->setCategory($searchCategory);
+              // $searchCategory->addNote($note);
+              // $category->setWording('test');
+              // $note->setCategory($category);
+              $entityManager->flush();
+            }
+            else{
+              $category = new Category();
+              $category->setWording($form->get('category')->getData()->getWording());
+              $entityManager->persist($category);
+              $entityManager->flush();
+            }
+
+            // $entityManager->persist($note);
             return $this->redirectToRoute('home');
         }
         elseif ($form->isSubmitted() && 'home' === $form->getClickedButton()->getName()) {

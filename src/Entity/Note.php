@@ -23,12 +23,14 @@ class Note
 
     /**
      * @ORM\Column(type="string", length=100)
-     * * @Assert\NotBlank(message="Veuillez entrer une valeur")
+     * @Assert\NotBlank(message="Veuillez entrer une valeur")
+     * @Assert\NotNull(message="Veuillez entrer une valeur")
      */
     private $title;
     /**
      * @ORM\Column(type="string", length=100)
      * @Assert\NotBlank(message="Veuillez entrer une valeur")
+     * @Assert\NotNull(message="Veuillez entrer une valeur")
      */
      // @AcmeAssert\XmlSource
     private $content;
